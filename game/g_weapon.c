@@ -617,6 +617,52 @@ void rocket_touch (edict_t *ent, edict_t *other, cplane_t *plane, csurface_t *su
 	G_FreeEdict (ent);
 }
 
+// Evan color things
+int count = 0;
+int color = 0;
+
+void wrapColor()
+{
+	color = 0;
+	switch (count)
+	{
+	case 1:
+		// Blue
+		color |= (RF_SHELL_BLUE);
+		break;
+	case 2:
+		// Green
+		color |= (RF_SHELL_GREEN);
+		break;
+	case 3:
+		// Aqua (star)
+		color |= (RF_SHELL_GREEN | RF_SHELL_BLUE);
+		break;
+	case 4:
+		// Red
+		color |= (RF_SHELL_RED);
+		break;
+	case 5:
+		// Pink
+		color |= (RF_SHELL_RED | RF_SHELL_BLUE);
+		break;
+	case 6:
+		// Yellow
+		color |= (RF_SHELL_RED | RF_SHELL_GREEN);
+		break;
+	case 7:
+		// White
+		color |= (RF_SHELL_RED | RF_SHELL_GREEN | RF_SHELL_BLUE);
+		break;
+	default:
+		break;
+	}
+	count++;
+	if (count == 8) {
+		count = 0;
+	}
+}
+
 void fire_rocket (edict_t *self, vec3_t start, vec3_t dir, int damage, int speed, float damage_radius, int radius_damage)
 {
 	edict_t	*rocket;
@@ -630,6 +676,11 @@ void fire_rocket (edict_t *self, vec3_t start, vec3_t dir, int damage, int speed
 	rocket->clipmask = MASK_SHOT;
 	rocket->solid = SOLID_BBOX;
 	rocket->s.effects |= EF_ROCKET;
+	// Evan's edits, much love
+	rocket->s.effects |= EF_COLOR_SHELL;
+	wrapColor();
+	rocket->s.renderfx |= color;
+	// DONE
 	VectorClear (rocket->mins);
 	VectorClear (rocket->maxs);
 	rocket->s.modelindex = gi.modelindex ("models/objects/rocket/tris.md2");
