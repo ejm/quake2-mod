@@ -645,6 +645,8 @@ void SpawnEntities (char *mapname, char *entities, char *spawnpoint)
 
 #endif
 
+char *empty_statusbar = "";
+
 char *single_statusbar = 
 "yb	-24 "
 
@@ -840,6 +842,8 @@ void SP_worldspawn (edict_t *ent)
 		gi.configstring (CS_STATUSBAR, dm_statusbar);
 	else
 		gi.configstring (CS_STATUSBAR, single_statusbar);
+	// empty the statusbar no matter what
+	gi.configstring(CS_STATUSBAR, empty_statusbar);
 
 	//---------------
 
